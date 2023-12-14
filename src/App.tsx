@@ -6,7 +6,6 @@ import uuid from "react-uuid";
 function App() {
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
-  const [listIsDone, setListIsDone] = useState<boolean>(false);
   const [cards, setCards] = useState<CardType[]>([]);
 
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) =>

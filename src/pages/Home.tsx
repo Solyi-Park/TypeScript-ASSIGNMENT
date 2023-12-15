@@ -1,18 +1,16 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Input } from "../components/Input";
 import { TodoList } from "../components/todoList";
 import { useState } from "react";
 import uuid from "react-uuid";
 import { addTodo } from "../redux/todosSlice";
+import { RootState, useAppDispatch } from "../redux/store";
 
 const Home = () => {
-  const dispatch = useDispatch();
-  const todos: CardType[] = useSelector(state => state)
-  console.log(todos)
+  const dispatch = useAppDispatch();
+  const todos: CardType[] = useSelector((state: RootState) => state.todos)
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
-  const [listIsDone, setListIsDone] = useState<boolean>(false);
-  // const [cards, setCards] = useState<CardType[]>([]);
 
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) =>
     setTitle(e.target.value);
@@ -28,8 +26,7 @@ const Home = () => {
       content,
       isDone: false,
     };
-    dispatch(addTodo(newCard))
-    // setCards([newCard, ...cards]);
+    dispatch(addTodo(newCard));
   };
 
   return (
@@ -41,8 +38,8 @@ const Home = () => {
         title={title}
         content={content}
       />
-      <TodoList listIsDone={false} cards={todos} setCards={setCards} />
-      <TodoList listIsDone={true} cards={todos} setCards={setCards} />
+      <TodoList listIsDone={false} todos={todos} />
+      <TodoList listIsDone={true} todos={todos} />
     </>
   );
 };

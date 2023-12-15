@@ -15,6 +15,7 @@ const initialState = [
     isDone: true,
   },
 ];
+console.log(initialState);
 
 const todosSlice = createSlice({
   name: "todos",
@@ -22,10 +23,16 @@ const todosSlice = createSlice({
   reducers: {
     addTodo: (state, action) => {
       state.push(action.payload);
-      console.log(action.payload);
     },
-    deleteTodo: (state, action) => {},
-    switchTodo: (state, action) => {},
+    deleteTodo: (state, action) => {
+      return state.filter((todo) => todo.id !== action.payload.id);
+    },
+    switchTodo: (state, action) => {
+      const id = action.payload.id;
+      return state.map((todo) => {
+        return todo.id === id ? { ...todo, isDone: !todo.isDone } : todo;
+      });
+    },
   },
 });
 

@@ -1,19 +1,21 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { deleteTodo, switchTodo } from "../redux/todosSlice";
 
-export const TodoList: React.FC<TodoListProps> = ({ listIsDone, cards, setCards }) => {
-  
-  
+interface TodoListProps {
+  listIsDone: boolean;
+  todos: CardType[]
+}
+
+export const TodoList = ({ listIsDone, todos }: TodoListProps) => {
+  const dispatch = useDispatch();
   const handleCompleteButtonClick = (item: CardType): void => {
-    const newCard = cards.map(card => {
-      return card.id === item.id ? {...card, isDone: !card.isDone} : card 
-    })
-    setCards(newCard);
+    dispatch(switchTodo(item));
   };
 
   const handleDeleteButtonClick = (item: CardType) => {
-    const updateCards = cards.filter(card => card.id !== item.id)
-    setCards(updateCards)
+    dispatch(deleteTodo(item));
   };
 
   return (
@@ -21,9 +23,9 @@ export const TodoList: React.FC<TodoListProps> = ({ listIsDone, cards, setCards 
       <div>
         <h1>{listIsDone ? "Done List" : "Working List"}</h1>
         <CardBox>
-          {cards
-            .filter((card) => {
-              return card.isDone === listIsDone;
+          {todos
+            .filter((todo) => {
+              return todo.isDone === listIsDone;
             })
             .map((item) => {
               return (
@@ -34,7 +36,9 @@ export const TodoList: React.FC<TodoListProps> = ({ listIsDone, cards, setCards 
                     <button onClick={() => handleCompleteButtonClick(item)}>
                       {item.isDone ? "취소" : "완료"}
                     </button>
-                    <button onClick={() => handleDeleteButtonClick(item)}>삭제</button>
+                    <button onClick={() => handleDeleteButtonClick(item)}>
+                      삭제
+                    </button>
                   </div>
                 </Card>
               );

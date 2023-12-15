@@ -1,5 +1,12 @@
-import { PropsWithChildren, ReactNode } from "react";
 import styled from "styled-components";
+
+interface InputProps {
+  handleChangeTitle: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChangeContent: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleOnSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  title: string;
+  content: string;
+}
 
 export const Input = ({
   handleChangeTitle,
@@ -7,7 +14,7 @@ export const Input = ({
   handleOnSubmit,
   title,
   content,
-}: PropsWithChildren<InputProps>) => {
+}: InputProps) => {
   return (
     <Container>
       <h1>Todo list 등록하기</h1>

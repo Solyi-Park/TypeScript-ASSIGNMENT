@@ -1,15 +1,12 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { deleteTodo, switchTodo } from "../redux/todosSlice";
+import { RootState } from "../redux/store";
 
-interface TodoListProps {
-  listIsDone: boolean;
-  todos: CardType[]
-}
 
-export const TodoList = ({ listIsDone, todos }: TodoListProps) => {
+export const TodoList = ({listIsDone}: {listIsDone: boolean}) => {
   const dispatch = useDispatch();
+  const todos: CardType[] = useSelector((state: RootState) => state.todos)
   const handleCompleteButtonClick = (item: CardType): void => {
     dispatch(switchTodo(item));
   };

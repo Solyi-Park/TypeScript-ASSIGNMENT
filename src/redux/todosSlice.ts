@@ -15,7 +15,6 @@ const initialState = [
     isDone: true,
   },
 ];
-console.log(initialState);
 
 const todosSlice = createSlice({
   name: "todos",

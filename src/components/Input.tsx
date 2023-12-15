@@ -1,14 +1,13 @@
 import { PropsWithChildren, ReactNode } from "react";
 import styled from "styled-components";
 
-
-export const Input: React.FC<InputProps> = ({
-    handleChangeTitle,
-    handleChangeContent,
-    handleOnSubmit,
-    title,
-    content,
-  }) => {
+export const Input = ({
+  handleChangeTitle,
+  handleChangeContent,
+  handleOnSubmit,
+  title,
+  content,
+}: PropsWithChildren<InputProps>) => {
   return (
     <Container>
       <h1>Todo list 등록하기</h1>

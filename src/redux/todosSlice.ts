@@ -15,12 +15,14 @@ const initialState = [
     isDone: true,
   },
 ];
-console.log(initialState);
 
 const todosSlice = createSlice({
   name: "todos",
   initialState,
   reducers: {
+    setTodo: (state, action) => {
+      return action.payload;
+    },
     addTodo: (state, action) => {
       state.push(action.payload);
     },
@@ -37,4 +39,4 @@ const todosSlice = createSlice({
 });
 
 export default todosSlice.reducer;
-export const { addTodo, deleteTodo, switchTodo } = todosSlice.actions;
+export const { setTodo, addTodo, deleteTodo, switchTodo } = todosSlice.actions;

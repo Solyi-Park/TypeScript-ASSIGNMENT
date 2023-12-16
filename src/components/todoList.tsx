@@ -1,21 +1,47 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { deleteTodo, switchTodo } from "../redux/todosSlice";
+import { addTodo, deleteTodo, setTodo, switchTodo } from "../redux/todosSlice";
+import { RootState } from "../redux/store";
+import { useEffect } from "react";
+import axios from "axios";
 
-interface TodoListProps {
-  listIsDone: boolean;
-  todos: CardType[]
-}
-
-export const TodoList = ({ listIsDone, todos }: TodoListProps) => {
+export const TodoList = ({ listIsDone }: { listIsDone: boolean }) => {
   const dispatch = useDispatch();
-  const handleCompleteButtonClick = (item: CardType): void => {
-    dispatch(switchTodo(item));
+  const todos: CardType[] = useSelector((state: RootState) => state.todos);
+
+  const fetchData = async () => {
+    try {
+      const { data } = await axios.get("http://localhost:4000/todos");
+      dispatch(setTodo(data));
+      console.log(todos);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  const handleDeleteButtonClick = (item: CardType) => {
-    dispatch(deleteTodo(item));
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleCompleteButtonClick = async (item: CardType) => {
+    try {
+      await axios.patch(`http://localhost:4000/todos/${item.id}`, {
+        isDone: !item.isDone,
+      });
+      dispatch(switchTodo(item));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleDeleteButtonClick = async (item: CardType) => {
+    try {
+      await axios.delete(`http://localhost:4000/todos/${item.id}`);
+      dispatch(deleteTodo(item));
+      // 또 fetchData 여기서..?
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -33,10 +59,16 @@ export const TodoList = ({ listIsDone, todos }: TodoListProps) => {
                   <h2>{item.title}</h2>
                   <p>{item.content}</p>
                   <div>
-                    <button onClick={() => handleCompleteButtonClick(item)}>
+                    <button
+                      type="button"
+                      onClick={() => handleCompleteButtonClick(item)}
+                    >
                       {item.isDone ? "취소" : "완료"}
                     </button>
-                    <button onClick={() => handleDeleteButtonClick(item)}>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteButtonClick(item)}
+                    >
                       삭제
                     </button>
                   </div>

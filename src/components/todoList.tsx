@@ -4,6 +4,7 @@ import { addTodo, deleteTodo, setTodo, switchTodo } from "../redux/todosSlice";
 import { RootState } from "../redux/store";
 import { useEffect } from "react";
 import axios from "axios";
+import { CardType } from "../types/global";
 
 export const TodoList = ({ listIsDone }: { listIsDone: boolean }) => {
   const dispatch = useDispatch();

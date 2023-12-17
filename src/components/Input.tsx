@@ -3,6 +3,7 @@ import { useAppDispatch } from "../redux/store";
 import { useState } from "react";
 import { addTodo } from "../redux/todosSlice";
 import axios from "axios";
+import { CardType } from "../types/global";
 
 export const Input = () => {
   const dispatch = useAppDispatch();

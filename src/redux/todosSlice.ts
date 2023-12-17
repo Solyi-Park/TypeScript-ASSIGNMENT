@@ -20,6 +20,7 @@ const initialState = {
     },
   ],
   isLoading: false,
+  isError: false,
   error: null,
 };
 
@@ -124,6 +125,7 @@ const todosSlice = createSlice({
       })
       .addCase(__getTodos.rejected, (state, action) => {
         state.isLoading = false;
+        state.isError = true;
         // state.error = action.payload
       })
       .addCase(__addTodo.pending, (state) => {
@@ -135,6 +137,7 @@ const todosSlice = createSlice({
       })
       .addCase(__addTodo.rejected, (state, action) => {
         state.isLoading = false;
+        state.isError = true;
         // state.error = action.payload
       })
       .addCase(__deleteTodo.pending, (state) => {
@@ -148,6 +151,7 @@ const todosSlice = createSlice({
       })
       .addCase(__deleteTodo.rejected, (state, action) => {
         state.isLoading = false;
+        state.isError = true;
         // state.error = action.payload
       })
       .addCase(__switchTodo.pending, (state) => {
@@ -162,6 +166,7 @@ const todosSlice = createSlice({
       })
       .addCase(__switchTodo.rejected, (state, action) => {
         state.isLoading = false;
+        state.isError = true;
         // state.error = action.payload
       });
   },

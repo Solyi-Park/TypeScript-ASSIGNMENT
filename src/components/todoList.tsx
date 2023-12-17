@@ -8,11 +8,11 @@ import { CardType } from "../types/global";
 type todosType = {
   todos: CardType[];
   isLoading: boolean;
-  error: null;
+  isError: boolean;
 };
 export const TodoList = ({ listIsDone }: { listIsDone: boolean }) => {
   const dispatch = useAppDispatch(); 
-  const { todos, isLoading, error }: todosType = useSelector(
+  const { todos, isLoading, isError }: todosType = useSelector(
     (state: RootState) => state.todos
   );
   const fetchData = async () => {
@@ -28,8 +28,13 @@ export const TodoList = ({ listIsDone }: { listIsDone: boolean }) => {
   }, []);
 
   if (isLoading) {
-    return <div>로딩중...</div>;
+    return <div>로딩중입니다...!</div>;
   }
+
+  if (isError) {
+    return <div>오류가 발생하였습니다..!</div>
+  }
+
 
   const handleCompleteButtonClick = async (item: CardType) => {
     dispatch(__switchTodo(item.id));

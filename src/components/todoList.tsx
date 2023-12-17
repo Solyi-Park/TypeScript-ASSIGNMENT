@@ -12,7 +12,9 @@ export const TodoList = ({ listIsDone }: { listIsDone: boolean }) => {
 
   const fetchData = async () => {
     try {
-      const { data } = await axios.get("http://localhost:4000/todos");
+      const { data } = await axios.get<CardType[]>(
+        "http://localhost:4000/todos"
+      );
       dispatch(setTodo(data));
       console.log(todos);
     } catch (err) {
@@ -26,7 +28,7 @@ export const TodoList = ({ listIsDone }: { listIsDone: boolean }) => {
 
   const handleCompleteButtonClick = async (item: CardType) => {
     try {
-      await axios.patch(`http://localhost:4000/todos/${item.id}`, {
+      await axios.patch<CardType>(`http://localhost:4000/todos/${item.id}`, {
         isDone: !item.isDone,
       });
       dispatch(switchTodo(item));
@@ -37,7 +39,7 @@ export const TodoList = ({ listIsDone }: { listIsDone: boolean }) => {
 
   const handleDeleteButtonClick = async (item: CardType) => {
     try {
-      await axios.delete(`http://localhost:4000/todos/${item.id}`);
+      await axios.delete<CardType>(`http://localhost:4000/todos/${item.id}`);
       dispatch(deleteTodo(item));
       // 또 fetchData 여기서..?
     } catch (err) {

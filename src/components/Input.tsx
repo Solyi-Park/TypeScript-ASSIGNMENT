@@ -26,7 +26,7 @@ export const Input = () => {
       isDone: false,
     };
     try {
-      const { data } = await axios.post("http://localhost:4000/todos", newCard);
+      const { data } = await axios.post<CardType>("http://localhost:4000/todos", newCard);
 
       // 혹시 이렇게 dispacth로 data를 바로 넘겨주지 않고 state로 관리를 해줘야하나?
       // setTodos(...todos, newCard) 요런식으로 해줘야하나?

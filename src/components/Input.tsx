@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import { useAppDispatch } from "../redux/store";
 import { useState } from "react";
-import { addTodo } from "../redux/todosSlice";
-import axios from "axios";
+import { __addTodo } from "../redux/todosSlice";
 import { CardType } from "../types/global";
 
 export const Input = () => {
@@ -25,17 +24,7 @@ export const Input = () => {
       content,
       isDone: false,
     };
-    try {
-      const { data } = await axios.post("http://localhost:4000/todos", newCard);
-
-      // 혹시 이렇게 dispacth로 data를 바로 넘겨주지 않고 state로 관리를 해줘야하나?
-      // setTodos(...todos, newCard) 요런식으로 해줘야하나?
-      dispatch(addTodo(data));
-
-      // fetchData가 여기에 들어가야하나?
-    } catch (err) {
-      console.log(err);
-    }
+      dispatch(__addTodo(newCard));
   };
 
   return (

@@ -1,48 +1,50 @@
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { addTodo, deleteTodo, setTodo, switchTodo } from "../redux/todosSlice";
-import { RootState } from "../redux/store";
+import {
+  __deleteTodo,
+  // __deleteTodo,
+  __getTodos,
+  __switchTodo,
+  // __switchTodo,
+
+} from "../redux/todosSlice";
+import { RootState, useAppDispatch } from "../redux/store";
 import { useEffect } from "react";
 import axios from "axios";
 import { CardType } from "../types/global";
 
+type todosType = {
+  todos: CardType[];
+  isLoading: boolean;
+  error: null;
+};
 export const TodoList = ({ listIsDone }: { listIsDone: boolean }) => {
-  const dispatch = useDispatch();
-  const todos: CardType[] = useSelector((state: RootState) => state.todos);
-
+  const dispatch = useAppDispatch(); //이부분에서 useDispatch로 호출해서 __getTodos 부분에 오류가 났음 ㅠ
+  const { todos, isLoading, error }: todosType = useSelector(
+    (state: RootState) => state.todos
+  );
   const fetchData = async () => {
     try {
-      const { data } = await axios.get("http://localhost:4000/todos");
-      dispatch(setTodo(data));
-      console.log(todos);
+      dispatch(__getTodos());
     } catch (err) {
-      console.log(err);
+      console.log("error", err);
     }
   };
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [dispatch]);
+
+  if(isLoading){
+    return <div>로딩중...</div>
+  } 
 
   const handleCompleteButtonClick = async (item: CardType) => {
-    try {
-      await axios.patch(`http://localhost:4000/todos/${item.id}`, {
-        isDone: !item.isDone,
-      });
-      dispatch(switchTodo(item));
-    } catch (err) {
-      console.log(err);
-    }
+      dispatch(__switchTodo(item.id));
   };
 
   const handleDeleteButtonClick = async (item: CardType) => {
-    try {
-      await axios.delete(`http://localhost:4000/todos/${item.id}`);
-      dispatch(deleteTodo(item));
-      // 또 fetchData 여기서..?
-    } catch (err) {
-      console.log(err);
-    }
+      dispatch(__deleteTodo(item.id));
   };
 
   return (

@@ -1,42 +1,46 @@
-import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { __deleteTodo, __getTodos, __switchTodo } from "../redux/todosSlice";
-import { RootState, useAppDispatch } from "../redux/store";
-import { useEffect } from "react";
-import { CardType } from "../types/global";
 
-type todosType = {
-  todos: CardType[];
-  isLoading: boolean;
-  error: null;
-};
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { deleteTodo, getTodos, switchTodo } from "../api/todos";
+
 export const TodoList = ({ listIsDone }: { listIsDone: boolean }) => {
-  const dispatch = useAppDispatch(); 
-  const { todos, isLoading, error }: todosType = useSelector(
-    (state: RootState) => state.todos
-  );
-  const fetchData = async () => {
-    try {
-      dispatch(__getTodos());
-    } catch (err) {
-      console.log("error", err);
-    }
-  };
+  const {
+    isLoading,
+    isError,
+    data = [],
+  } = useQuery<CardType[]>("todos", getTodos);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const queryClient = useQueryClient();
+  const deleteTodoMutation = useMutation(deleteTodo, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("todos");
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+
+  const switchTodoMutation = useMutation(switchTodo, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("todos");
+    },
+  });
 
   if (isLoading) {
-    return <div>로딩중...</div>;
+    return <div>로딩중입니다...!</div>;
+  }
+
+  if (isError) {
+    return <div>오류가 발생하였습니다...!</div>;
   }
 
   const handleCompleteButtonClick = async (item: CardType) => {
-    dispatch(__switchTodo(item.id));
+    switchTodoMutation.mutate(item);
   };
 
-  const handleDeleteButtonClick = async (item: CardType) => {
-    dispatch(__deleteTodo(item.id));
+
+  const handleDeleteButtonClick = (item: CardType) => {
+    deleteTodoMutation.mutate(item);
   };
 
   return (
@@ -44,9 +48,9 @@ export const TodoList = ({ listIsDone }: { listIsDone: boolean }) => {
       <div>
         <h1>{listIsDone ? "Done List" : "Working List"}</h1>
         <CardBox>
-          {todos
-            .filter((todo) => {
-              return todo.isDone === listIsDone;
+          {data
+            .filter((item) => {
+              return item.isDone === listIsDone;
             })
             .map((item) => {
               return (

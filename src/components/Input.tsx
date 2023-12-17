@@ -1,11 +1,19 @@
 import styled from "styled-components";
-import { useAppDispatch } from "../redux/store";
 import { useState } from "react";
-import { __addTodo } from "../redux/todosSlice";
-import { CardType } from "../types/global";
+import { useMutation, useQueryClient } from "react-query";
+import { addTodo } from "../api/todos";
 
 export const Input = () => {
-  const dispatch = useAppDispatch();
+
+  const queryClient = useQueryClient();
+  const mutation = useMutation(addTodo, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("todos");
+    },
+    onError: (err) => {
+      console.log(err);
+    }
+  });
 
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
@@ -24,7 +32,8 @@ export const Input = () => {
       content,
       isDone: false,
     };
-      dispatch(__addTodo(newCard));
+    mutation.mutate(newCard);
+
   };
 
   return (

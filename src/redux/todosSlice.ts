@@ -27,7 +27,7 @@ export const __getTodos = createAsyncThunk<CardType[], void>(
   "GET_TODOS",
   async (payload, thunkAPI) => {
     try {
-      const res = await axios.get<CardType[]>("http://localhost:4000/todosㅇ");
+      const res = await axios.get<CardType[]>("http://localhost:4000/todos");
       console.log("res", res);
       return thunkAPI.fulfillWithValue(res.data);
     } catch (err) {
@@ -88,7 +88,7 @@ export const __switchTodo = createAsyncThunk<CardType, string>(
     const state = thunkAPI.getState() as RootState;
     const todos = state.todos.todos;
     const foundTodo = todos.find((todo) => todo.id === id);
-    const isDone = foundTodo ? !foundTodo.isDone : false;
+    const isDone = foundTodo && !foundTodo.isDone
     try {
       const res = await axios.patch<CardType>(
         `http://localhost:4000/todos/${id}`,
@@ -124,7 +124,6 @@ const todosSlice = createSlice({
       })
       .addCase(__getTodos.rejected, (state, action) => {
         state.isLoading = false;
-        console.log('test: ', action.payload)
         // state.error = action.payload
       })
       .addCase(__addTodo.pending, (state) => {

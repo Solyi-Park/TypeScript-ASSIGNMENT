@@ -1,16 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import {
-  __deleteTodo,
-  // __deleteTodo,
-  __getTodos,
-  __switchTodo,
-  // __switchTodo,
-
-} from "../redux/todosSlice";
+import { __deleteTodo, __getTodos, __switchTodo } from "../redux/todosSlice";
 import { RootState, useAppDispatch } from "../redux/store";
 import { useEffect } from "react";
-import axios from "axios";
 import { CardType } from "../types/global";
 
 type todosType = {
@@ -19,7 +11,7 @@ type todosType = {
   error: null;
 };
 export const TodoList = ({ listIsDone }: { listIsDone: boolean }) => {
-  const dispatch = useAppDispatch(); //이부분에서 useDispatch로 호출해서 __getTodos 부분에 오류가 났음 ㅠ
+  const dispatch = useAppDispatch(); 
   const { todos, isLoading, error }: todosType = useSelector(
     (state: RootState) => state.todos
   );
@@ -33,18 +25,18 @@ export const TodoList = ({ listIsDone }: { listIsDone: boolean }) => {
 
   useEffect(() => {
     fetchData();
-  }, [dispatch]);
+  }, []);
 
-  if(isLoading){
-    return <div>로딩중...</div>
-  } 
+  if (isLoading) {
+    return <div>로딩중...</div>;
+  }
 
   const handleCompleteButtonClick = async (item: CardType) => {
-      dispatch(__switchTodo(item.id));
+    dispatch(__switchTodo(item.id));
   };
 
   const handleDeleteButtonClick = async (item: CardType) => {
-      dispatch(__deleteTodo(item.id));
+    dispatch(__deleteTodo(item.id));
   };
 
   return (

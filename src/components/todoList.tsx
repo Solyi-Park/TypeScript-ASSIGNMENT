@@ -143,5 +143,11 @@ const Buttons = styled.div`
 `
 
 const TextArea = styled.div`
+display: flex;
+flex-direction: column;
+align-items: center;
   overflow: hidden;
+   & h2 {
+    margin-bottom: 8px;
+   }
 `

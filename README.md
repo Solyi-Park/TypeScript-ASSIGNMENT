@@ -1,5 +1,5 @@
 # TypeScript 기반 TodoList #
-##프로젝트 소개##
+## 프로젝트 소개 ##
 이 프로젝트는 다양한 React 및 Redux 기술을 사용하여 TodoList 애플리케이션을 단계별로 구축하는 것을 목표로 합니다. 각 레벨은 특정 기술이나 접근 방식을 중점적으로 다루며, TypeScript를 기반으로 구현되었습니다.
 
 <img width="1266" alt="스크린샷 2023-12-18 오후 12 01 04" src="https://github.com/Solyi-Park/TypeScript-ASSIGNMENT/assets/121113217/0c46c8bb-05b2-4a4b-b8f7-7b00efd31afc">

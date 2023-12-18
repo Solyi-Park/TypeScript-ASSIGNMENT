@@ -4,7 +4,6 @@ import { useMutation, useQueryClient } from "react-query";
 import { addTodo } from "../api/todos";
 
 export const Input = () => {
-
   const queryClient = useQueryClient();
   const mutation = useMutation(addTodo, {
     onSuccess: () => {
@@ -12,7 +11,7 @@ export const Input = () => {
     },
     onError: (err) => {
       console.log(err);
-    }
+    },
   });
 
   const [title, setTitle] = useState<string>("");
@@ -33,23 +32,63 @@ export const Input = () => {
       isDone: false,
     };
     mutation.mutate(newCard);
-
+    setTitle("");
+    setContent("");
   };
 
   return (
     <Container>
-      <h1>Todo list 등록하기</h1>
+      <h1>MY TODO LIST</h1>
       <form onSubmit={handleOnSubmit}>
-        제목&nbsp;
-        <input value={title} onChange={handleChangeTitle} />
-        내용&nbsp;
-        <input value={content} onChange={handleChangeContent} />
-        <button type="submit">등록</button>
+        <input
+          value={title}
+          onChange={handleChangeTitle}
+          placeholder="제목을 입력해주세요."
+        />
+        <input
+          value={content}
+          onChange={handleChangeContent}
+          placeholder="세부사항을 입력해주세요."
+        />
+        <button type="submit">추가하기</button>
       </form>
     </Container>
   );
 };
 
 const Container = styled.div`
-  background-color: #f29150;
+  width: 100vw;
+  height: 30vh;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  & h1 {
+    margin-bottom: 50px;
+    font-size: 30px;
+    font-weight: 700;
+    font-style: italic;
+  }
+  & input {
+    width: 400px;
+    height: 35px;
+    margin-right: 10px;
+    border: 1.5px solid #111;
+    border-radius: 30px;
+    padding: 5px 15px;
+    font-size: 16px;
+  }
+  & button {
+    padding: 13px 20px;
+    font-size: 18px;
+    background-color: transparent;
+    border: none;
+    font-weight: 600;
+    &:hover {
+      color: #6979f0;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+  }
 `;
